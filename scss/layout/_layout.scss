@@ -1,0 +1,56 @@
+/* GRID LAYOUTS */
+.grid {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+    &--news {
+        grid-template-columns: repeat(3, 1fr);
+
+        @media(max-width: 768px) {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    &--squad {
+        grid-template-columns: repeat(4, 1fr);
+
+        @media(max-width: 768px) {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
+    &--transfers {
+        // Sustituye el inline style de los fichajes
+        grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    }
+}
+
+/* SECTIONS */
+.section {
+    padding: 4rem 0;
+
+    &--light {
+        background-color: $light;
+    }
+
+    // Sustituye el background inline
+    &--no-bottom {
+        padding-bottom: 0;
+    }
+
+    // Sustituye el padding-bottom inline
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    &__title {
+        font-size: 2rem;
+        color: $dark;
+        border-left: 5px solid $accent;
+        padding-left: 15px;
+    }
+}

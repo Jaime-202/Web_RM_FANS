@@ -1,0 +1,41 @@
+/* TRANSFER CARD */
+.transfer-card {
+    display: flex;
+    align-items: center;
+    background: $white;
+    border: 1px solid #eee;
+    padding: 1rem;
+    border-radius: 8px;
+    gap: 1rem;
+
+    &__img {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 4px;
+    }
+
+    &__info {
+        flex: 1;
+    }
+
+    &__name {
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: $dark;
+    }
+
+    &__status {
+        display: inline-block;
+        font-size: 0.75rem;
+        background: $accent;
+        padding: 2px 10px;
+        border-radius: 4px;
+        margin-top: 5px;
+        font-weight: bold;
+
+        &--done {
+            background-color: $success;
+        }
+    }
+}

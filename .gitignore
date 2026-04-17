@@ -1,0 +1,24 @@
+# Ejecutables compilados (como servidor.exe)
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.bin
+
+# Directorios de datos y archivos generados
+data/
+*.jsonline
+
+# Entornos de desarrollo / IDEs (si usan alguno)
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Archivos propios del Sistema Operativo
+.DS_Store
+Thumbs.db

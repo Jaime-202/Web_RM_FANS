@@ -3,30 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contacto - Tienda de Mascotas</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <title>Enviar Rumores - Real Madrid News</title>
+    <link rel="stylesheet" href="/static/css/estilos.css">
 </head>
-<body>
-    <h1>Contacto - Huellitas Pet Shop</h1>
-    <p>¿Tienes alguna duda sobre nuestros productos? ¡Escríbenos!</p>
+<body style="font-family: Arial, sans-serif; background-color: #f3f4f6; color: #333; margin: 0; padding: 20px;">
     
-    <form action="/contacto/enviar" method="POST">
-        <div>
-            <label for="name">Nombre de contacto:</label><br>
-            <input type="text" id="name" name="name" required>
-        </div>
+    <div style="max-width: 600px; margin: 40px auto; background: white; padding: 40px; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center;">
+        <h1 style="color: #094293; margin-bottom: 10px;">Buzón de Rumores Madridistas</h1>
+        <p style="margin-bottom: 30px;">¿Te has enterado de algún fichaje bomba o exclusiva? Envíalo a nuestra redacción deportiva.</p>
+        
+        <form action="/contacto/enviar" method="POST" style="text-align: left;">
+            <div style="margin-bottom: 15px;">
+                <label for="name" style="font-weight: bold;">Tu nombre o apodo:</label><br>
+                <input type="text" id="name" name="name" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label for="email" style="font-weight: bold;">Tu correo corporativo o personal:</label><br>
+                <input type="email" id="email" name="email" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box;">
+            </div>
+            
+            <div style="margin-bottom: 25px;">
+                <label for="message" style="font-weight: bold;">Detalles del rumor o exclusiva:</label><br>
+                <textarea id="message" name="message" rows="6" required style="width: 100%; padding: 10px; margin-top: 5px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; resize: vertical;"></textarea>
+            </div>
+            
+            <button type="submit" style="width: 100%; background: #094293; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 5px; cursor: pointer;">
+                Enviar Exclusiva
+            </button>
+        </form>
+        
         <br>
-        <div>
-            <label for="email">Correo electrónico:</label><br>
-            <input type="email" id="email" name="email" required>
-        </div>
-        <br>
-        <div>
-            <label for="message">Tu mensaje:</label><br>
-            <textarea id="message" name="message" rows="5" required></textarea>
-        </div>
-        <br>
-        <button type="submit">Enviar Mensaje</button>
-    </form>
+        <a href="/" style="color: #094293; text-decoration: none; font-size: 14px;">Volver a Noticias</a>
+    </div>
+
 </body>
 </html>

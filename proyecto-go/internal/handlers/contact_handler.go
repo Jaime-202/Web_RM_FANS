@@ -60,5 +60,12 @@ func (h *ContactHandler) ProcessForm(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.WriteHeader(http.StatusOK)
-	w.Write([]byte("¡Gracias por contactar con nuestra tienda de mascotas! Hemos recibido tu mensaje."))
+	w.Write([]byte(`
+        <div style="text-align: center; font-family: Arial; padding: 50px;">
+            <h2 style="color: #094293;">¡Exclusiva recibida con éxito!</h2>
+            <p>Gracias por tu aportación al Real Madrid News. Investigaremos el rumor de inmediato.</p>
+            <br>
+            <a href="/">Volver a la portada</a>
+        </div>
+    `))
 }

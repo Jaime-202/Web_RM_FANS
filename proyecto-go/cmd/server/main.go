@@ -25,9 +25,14 @@ func main() {
 	// 4. Configurar el multiplexor (Router) de HTTP
 	mux := http.NewServeMux()
 
-	fileServer := http.FileServer(http.Dir("./web/static"))
-	mux.Handle("/static/", http.StripPrefix("/static/", fileServer))
+	// Servir archivos estáticos y el index.html en la raíz
+	// IMPORTANTE: Asegúrate de que la ruta apunta a la carpeta donde está tu index.html original.
+	// Por tu captura, veo que index.html y las carpetas css/, img/ y pages/ están fuera de proyecto-go.
+	// Como ejecutas desde dentro de proyecto-go, subimos un nivel con "../"
+	fs := http.FileServer(http.Dir("../")) 
+	mux.Handle("/", fs)
 
+	// Las rutas del formulario se mantienen igual
 	mux.HandleFunc("/contacto", contactHandler.ServeForm)     // GET
 	mux.HandleFunc("/contacto/enviar", contactHandler.ProcessForm) // POST
 

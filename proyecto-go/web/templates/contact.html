@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto - Tienda de Mascotas</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <h1>Contacto - Huellitas Pet Shop</h1>
+    <p>¿Tienes alguna duda sobre nuestros productos? ¡Escríbenos!</p>
+    
+    <form action="/contacto/enviar" method="POST">
+        <div>
+            <label for="name">Nombre de contacto:</label><br>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <br>
+        <div>
+            <label for="email">Correo electrónico:</label><br>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <br>
+        <div>
+            <label for="message">Tu mensaje:</label><br>
+            <textarea id="message" name="message" rows="5" required></textarea>
+        </div>
+        <br>
+        <button type="submit">Enviar Mensaje</button>
+    </form>
+</body>
+</html>

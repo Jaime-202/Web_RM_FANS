@@ -182,10 +182,10 @@ http://localhost:8080
 
 ## 🔑 Acceso al Sistema
 
-El sistema incluye una cuenta de administrador preconfigurada. Las credenciales se gestionan directamente en el archivo `proyecto-go/data/users.json` y **no deben publicarse** en este documento.
+El portal cuenta con un sistema de autenticación de usuarios. Cualquier persona puede crear su propia cuenta desde la página de registro.
 
-### Usuario normal
-Cualquier persona puede registrarse en [http://localhost:8080/register](http://localhost:8080/register) introduciendo un nombre de usuario y contraseña. Las contraseñas se almacenan siempre con hash SHA-256, nunca en texto plano.
+### Registro de usuario
+Navega a [http://localhost:8080/register](http://localhost:8080/register) e introduce un nombre de usuario y contraseña. Las contraseñas se protegen criptográficamente, nunca se guardan en texto plano.
 
 ---
 
@@ -226,10 +226,10 @@ Cualquier persona puede registrarse en [http://localhost:8080/register](http://l
 
 ## 🔒 Seguridad
 
-- Las contraseñas se almacenan con hash **SHA-256** (nunca en texto plano)
-- Las sesiones usan cookies `HttpOnly` para evitar acceso desde JavaScript
-- Los middlewares verifican el rol del usuario antes de permitir acceso a rutas protegidas
-- Los tokens de sesión se generan con UUIDs únicos
+- Las contraseñas se protegen criptográficamente antes de almacenarse, nunca en texto plano
+- Las sesiones utilizan cookies seguras para evitar acceso no autorizado desde el navegador
+- Cada sección restringida comprueba el rol del usuario antes de permitir el acceso
+- Los tokens de sesión son únicos e irrepetibles
 
 ---
 

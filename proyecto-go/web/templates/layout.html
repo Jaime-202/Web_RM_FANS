@@ -1,0 +1,73 @@
+{{define "header"}}
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{if .PageTitle}}{{.PageTitle}} - {{end}}Real Madrid News</title>
+    <!-- Asumimos que los archivos estáticos se sirven desde /css, /img -->
+    <link rel="stylesheet" href="/css/estilos.css">
+    <style>
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+            font-size: 2rem;
+        }
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        .star-rating label {
+            color: #ccc;
+            cursor: pointer;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f5b301;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="header">
+        <div class="container header__inner" style="display: flex; justify-content: space-between; align-items: center;">
+            <div>
+                <a href="/" class="header__brand">Real Madrid News</a>
+            </div>
+            <nav class="header__nav">
+                <a href="/" class="header__link">Inicio</a>
+                <a href="/noticias" class="header__link">Noticias</a>
+                <a href="/plantilla" class="header__link">Plantilla</a>
+                <a href="/fichajes" class="header__link">Fichajes</a>
+                <a href="/contacto" class="header__link">Contacto</a>
+            </nav>
+            <div style="display: flex; gap: 10px;">
+                {{if .IsLoggedIn}}
+                    {{if .IsAdmin}}
+                        <a href="/admin/news/create" class="hero__btn" style="padding: 5px 10px; font-size: 0.9em;">Crear Noticia</a>
+                    {{end}}
+                    <a href="/logout" class="hero__btn hero__btn--secondary" style="padding: 5px 10px; font-size: 0.9em;">Salir</a>
+                {{else}}
+                    <a href="/login" class="hero__btn" style="padding: 5px 10px; font-size: 0.9em;">Login</a>
+                    <a href="/register" class="hero__btn hero__btn--secondary" style="padding: 5px 10px; font-size: 0.9em;">Registro</a>
+                {{end}}
+            </div>
+        </div>
+    </header>
+
+    <main class="container section">
+{{end}}
+
+{{define "footer"}}
+    </main>
+
+    <footer class="footer" style="padding: 40px 0; text-align: center; background-color: #1a1a1a; color: white;">
+        <div class="container">
+            <p>© 2026 Real Madrid News - PEC 1</p>
+        </div>
+    </footer>
+</body>
+
+</html>
+{{end}}

@@ -1,0 +1,36 @@
+{{template "header" .}}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 class="hero__title" style="text-align: left; margin: 0;">Rumores y Altas</h1>
+    {{if .IsAdmin}}
+    <a href="/admin/transfer/create" class="hero__btn" style="background-color: #28a745;">Añadir Fichaje</a>
+    {{end}}
+</div>
+
+<div class="grid" style="grid-template-columns: 1fr;">
+    {{range .Transfers}}
+    <div class="transfer-card" style="position: relative;">
+        <img src="{{.ImageURL}}" alt="{{.PlayerName}}" class="transfer-card__img" onerror="this.src='/img/mastantuono_river.jpg'">
+        <div class="transfer-card__info">
+            <div class="transfer-card__name">{{.PlayerName}}</div>
+            <p>{{.FromTeam}} → {{.ToTeam}}</p>
+            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{.Description}}</p>
+            
+            {{if eq .Status "Hecho"}}
+                <span class="transfer-card__status_done">{{.Status}}</span>
+            {{else}}
+                <span class="transfer-card__status_rumor">{{.Status}}</span>
+            {{end}}
+        </div>
+
+        {{if $.IsAdmin}}
+        <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
+            <a href="/admin/transfer/edit?id={{.ID}}" class="hero__btn" style="padding: 5px 10px; font-size: 0.8em; background: #f5b301; color: black;">Editar</a>
+            <a href="/admin/transfer/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 5px 10px; font-size: 0.8em; background: #dc3545;" onclick="return confirm('¿Borrar fichaje?');">Borrar</a>
+        </div>
+        {{end}}
+    </div>
+    {{else}}
+    <p>No hay fichajes ni rumores activos.</p>
+    {{end}}
+</div>
+{{template "footer" .}}

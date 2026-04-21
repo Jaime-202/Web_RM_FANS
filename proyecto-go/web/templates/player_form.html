@@ -1,0 +1,32 @@
+{{template "header" .}}
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom: 20px; color: #00529F;">{{.Action}} Jugador</h2>
+    
+    <form method="POST">
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre del Jugador:</label>
+            <input type="text" name="name" value="{{.Player.Name}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Posición:</label>
+            <select name="position" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                <option value="Portero" {{if eq .Player.Position "Portero"}}selected{{end}}>Portero</option>
+                <option value="Defensa" {{if eq .Player.Position "Defensa"}}selected{{end}}>Defensa</option>
+                <option value="Centrocampista" {{if eq .Player.Position "Centrocampista"}}selected{{end}}>Centrocampista</option>
+                <option value="Delantero" {{if eq .Player.Position "Delantero"}}selected{{end}}>Delantero</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">URL de la Imagen (ej. /img/plantilla/vini.jpg):</label>
+            <input type="text" name="image_url" value="{{.Player.ImageURL}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="hero__btn" style="flex: 1;">Guardar Jugador</button>
+            <a href="/plantilla" class="hero__btn hero__btn--secondary" style="flex: 1; text-align: center;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{{template "footer" .}}

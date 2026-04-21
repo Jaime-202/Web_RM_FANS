@@ -1,0 +1,81 @@
+{{template "header" .}}
+<section class="hero">
+    <div class="container hero__content">
+        {{if .FeaturedNews}}
+        <h1 class="hero__title">{{.FeaturedNews.Title}}</h1>
+        <p class="hero__subtitle">{{.FeaturedNews.Summary}}</p>
+        <div class="hero__actions">
+            <a href="/noticia?id={{.FeaturedNews.ID}}" class="hero__btn">Leer Noticia</a>
+            <a href="/noticias" class="hero__btn hero__btn--secondary">Ver Todas</a>
+        </div>
+        {{else}}
+        <h1 class="hero__title">Bienvenido a Real Madrid News</h1>
+        <p class="hero__subtitle">El mejor portal para estar enterado de la actualidad blanca.</p>
+        {{end}}
+    </div>
+</section>
+
+<section class="section container section--no-bottom">
+    <div class="section__header">
+        <h2 class="section__title">Más Actualidad</h2>
+        <a href="/noticias" class="hero__btn hero__btn--secondary">Ver Todo</a>
+    </div>
+    <div class="grid grid--news">
+        {{range .News}}
+        <article class="card-news">
+            <a href="/noticia?id={{.ID}}" style="text-decoration:none; color:inherit;">
+                <img src="{{.ImageURL}}" alt="{{.Title}}" class="card-news__img" onerror="this.src='/img/entrenamiento.jpg'">
+                <div class="card-news__body">
+                    <h3 class="card-news__title">{{.Title}}</h3>
+                    <p>{{.Summary}}</p>
+                </div>
+            </a>
+        </article>
+        {{end}}
+    </div>
+</section>
+
+<section class="section section--light">
+    <div class="container">
+        <div class="section__header">
+            <h2 class="section__title">Plantilla Destacada</h2>
+            <a href="/plantilla" class="hero__btn">Ver Completa</a>
+        </div>
+
+        <div class="grid grid--squad">
+            {{range .Players}}
+            <div class="player-mini">
+                <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+                <h4 class="player-mini__name">{{.Name}}</h4>
+                <small>{{.Position}}</small>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</section>
+
+<section class="section container">
+    <div class="section__header">
+        <h2 class="section__title">Mercado de Fichajes</h2>
+        <a href="/fichajes" class="hero__btn hero__btn--secondary">Ver Rumores</a>
+    </div>
+
+    <div class="grid grid--transfers">
+        {{range .Transfers}}
+        <article class="transfer-card">
+            <img src="{{.ImageURL}}" alt="{{.PlayerName}}" class="transfer-card__img" onerror="this.src='/img/mastantuono_river.jpg'">
+            <div class="transfer-card__info">
+                <h4 class="transfer-card__name">{{.PlayerName}}</h4>
+                <p>{{.FromTeam}} → {{.ToTeam}}</p>
+                {{if eq .Status "Hecho"}}
+                    <span class="transfer-card__status transfer-card__status_done">{{.Status}}</span>
+                {{else}}
+                    <span class="transfer-card__status transfer-card__status_rumor">{{.Status}}</span>
+                {{end}}
+            </div>
+        </article>
+        {{end}}
+    </div>
+</section>
+{{template "footer" .}}
+

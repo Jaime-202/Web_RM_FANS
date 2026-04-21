@@ -1,0 +1,46 @@
+{{template "header" .}}
+<div style="max-width: 600px; margin: 0 auto; padding: 20px; background: #fff; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h2 style="margin-bottom: 20px; color: #00529F;">{{.Action}} Fichaje / Rumor</h2>
+    
+    <form method="POST">
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Nombre del Jugador:</label>
+            <input type="text" name="player_name" value="{{.Transfer.PlayerName}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+        
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Equipo de Origen:</label>
+            <input type="text" name="from_team" value="{{.Transfer.FromTeam}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Equipo Destino:</label>
+            <input type="text" name="to_team" value="{{.Transfer.ToTeam}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Estado:</label>
+            <select name="status" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                <option value="Rumor" {{if eq .Transfer.Status "Rumor"}}selected{{end}}>Rumor</option>
+                <option value="Contrato verbal" {{if eq .Transfer.Status "Contrato verbal"}}selected{{end}}>Contrato verbal</option>
+                <option value="Hecho" {{if eq .Transfer.Status "Hecho"}}selected{{end}}>Hecho</option>
+            </select>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">Descripción:</label>
+            <textarea name="description" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">{{.Transfer.Description}}</textarea>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: bold;">URL de la Imagen:</label>
+            <input type="text" name="image_url" value="{{.Transfer.ImageURL}}" required style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+            <button type="submit" class="hero__btn" style="flex: 1;">Guardar Fichaje</button>
+            <a href="/fichajes" class="hero__btn hero__btn--secondary" style="flex: 1; text-align: center;">Cancelar</a>
+        </div>
+    </form>
+</div>
+{{template "footer" .}}

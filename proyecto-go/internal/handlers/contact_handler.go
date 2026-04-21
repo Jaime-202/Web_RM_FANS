@@ -2,19 +2,20 @@ package handlers
 
 import (
 	"html/template"
-	"log"
 	"net/http"
-	"path/filepath"
+	"proyecto-go/internal/middleware"
 	"proyecto-go/internal/services"
 )
 
 type ContactHandler struct {
 	service *services.ContactService
+	tmpl    *template.Template
 }
 
-func NewContactHandler(service *services.ContactService) *ContactHandler {
+func NewContactHandler(service *services.ContactService, t *template.Template) *ContactHandler {
 	return &ContactHandler{
 		service: service,
+		tmpl:    t,
 	}
 }
 
@@ -25,15 +26,13 @@ func (h *ContactHandler) ServeForm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	tmplPath := filepath.Join("web", "templates", "contact.html")
-	tmpl, err := template.ParseFiles(tmplPath)
-	if err != nil {
-		http.Error(w, "Error cargando la vista", http.StatusInternalServerError)
-		log.Printf("Error al cargar la plantilla: %v", err)
-		return
+	role, _ := r.Context().Value(middleware.RoleKey).(string)
+	data := map[string]interface{}{
+		"IsLoggedIn": r.Context().Value(middleware.UserIDKey) != nil,
+		"IsAdmin":    role == "admin",
 	}
 
-	tmpl.Execute(w, nil)
+	h.tmpl.ExecuteTemplate(w, "contact.html", data)
 }
 
 // ProcessForm atiende el POST proveniente del formulario HTML
@@ -59,13 +58,5 @@ func (h *ContactHandler) ProcessForm(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.WriteHeader(http.StatusOK)
-	w.Write([]byte(`
-        <div style="text-align: center; font-family: Arial; padding: 50px;">
-            <h2 style="color: #094293;">¡Exclusiva recibida con éxito!</h2>
-            <p>Gracias por tu aportación al Real Madrid News. Investigaremos el rumor de inmediato.</p>
-            <br>
-            <a href="/">Volver a la portada</a>
-        </div>
-    `))
+	http.Redirect(w, r, "/?contacto=ok", http.StatusSeeOther)
 }

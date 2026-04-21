@@ -1,0 +1,94 @@
+{{template "header" .}}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 class="hero__title" style="text-align: left; margin: 0;">Plantilla 2025/26</h1>
+    {{if .IsAdmin}}
+    <a href="/admin/player/create" class="hero__btn" style="background-color: #28a745;">+ Añadir Jugador</a>
+    {{end}}
+</div>
+
+{{if .Porteros}}
+<div class="squad-group">
+    <h3 class="squad-group__cat-title">Porteros</h3>
+    <div class="grid grid--squad">
+        {{range .Porteros}}
+        <div class="player-mini" style="position: relative;">
+            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+            <div class="player-mini__name">{{.Name}}</div>
+            {{if $.IsAdmin}}
+            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
+                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
+                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}
+
+{{if .Defensas}}
+<div class="squad-group">
+    <h3 class="squad-group__cat-title">Defensas</h3>
+    <div class="grid grid--squad">
+        {{range .Defensas}}
+        <div class="player-mini" style="position: relative;">
+            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+            <div class="player-mini__name">{{.Name}}</div>
+            {{if $.IsAdmin}}
+            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
+                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
+                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}
+
+{{if .Centrocampistas}}
+<div class="squad-group">
+    <h3 class="squad-group__cat-title">Centrocampistas</h3>
+    <div class="grid grid--squad">
+        {{range .Centrocampistas}}
+        <div class="player-mini" style="position: relative;">
+            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+            <div class="player-mini__name">{{.Name}}</div>
+            {{if $.IsAdmin}}
+            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
+                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
+                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}
+
+{{if .Delanteros}}
+<div class="squad-group">
+    <h3 class="squad-group__cat-title">Delanteros</h3>
+    <div class="grid grid--squad">
+        {{range .Delanteros}}
+        <div class="player-mini" style="position: relative;">
+            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+            <div class="player-mini__name">{{.Name}}</div>
+            {{if $.IsAdmin}}
+            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
+                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
+                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
+            </div>
+            {{end}}
+        </div>
+        {{end}}
+    </div>
+</div>
+{{end}}
+
+{{if not .Players}}
+<p style="text-align:center; color:#666; margin-top: 40px;">No hay jugadores en la plantilla.</p>
+{{end}}
+
+{{template "footer" .}}
+

@@ -1,0 +1,30 @@
+{{template "header" .}}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+    <h1 class="hero__title" style="text-align: left; margin: 0;">Últimas Noticias</h1>
+</div>
+
+<div class="grid grid--news">
+    {{range .News}}
+    <article class="card-news" style="position: relative;">
+        <a href="/noticia?id={{.ID}}" style="text-decoration:none; color:inherit; display: block;">
+            <img src="{{.ImageURL}}" alt="{{.Title}}" class="card-news__img" onerror="this.src='/img/entrenamiento.jpg'">
+            <div class="card-news__body">
+                <h3 class="card-news__title">{{.Title}}</h3>
+                <p>{{.Summary}}</p>
+                <div style="margin-top: 10px; font-size: 0.9rem; color: #666;">
+                    ⭐ {{printf "%.1f" .AverageRating}} ({{.RatingCount}} votos)
+                </div>
+            </div>
+        </a>
+        {{if $.IsAdmin}}
+        <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
+            <a href="/admin/news/edit?id={{.ID}}" class="hero__btn" style="padding: 5px 10px; font-size: 0.8em; background: #f5b301; color: black;">Editar</a>
+            <a href="/admin/news/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 5px 10px; font-size: 0.8em; background: #dc3545;" onclick="return confirm('¿Seguro que quieres borrar esta noticia?');">Borrar</a>
+        </div>
+        {{end}}
+    </article>
+    {{else}}
+    <p>No hay noticias publicadas todavía.</p>
+    {{end}}
+</div>
+{{template "footer" .}}

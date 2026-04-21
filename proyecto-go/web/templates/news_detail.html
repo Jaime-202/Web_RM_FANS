@@ -1,0 +1,41 @@
+{{template "header" .}}
+<article style="max-width: 800px; margin: 0 auto; background: #fff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+    <h1 style="margin-bottom: 10px; color: #00529F;">{{.News.Title}}</h1>
+    <p style="color: #666; font-style: italic; margin-bottom: 20px;">{{.News.Summary}}</p>
+    
+    <img src="{{.News.ImageURL}}" alt="{{.News.Title}}" style="width: 100%; border-radius: 8px; margin-bottom: 20px;" onerror="this.src='/img/entrenamiento.jpg'">
+    
+    <div style="line-height: 1.6; font-size: 1.1rem; margin-bottom: 30px;">
+        {{.News.Content}}
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #eee; margin: 30px 0;">
+
+    <div style="text-align: center;">
+        <h3 style="margin-bottom: 10px;">Valoración Media: ⭐ {{printf "%.1f" .News.AverageRating}} ({{.News.RatingCount}} votos)</h3>
+        
+        {{if .IsLoggedIn}}
+            <h4 style="margin-bottom: 10px;">
+                {{if .UserRating}}
+                    Tu valoración actual es de {{.UserRating.Score}} estrellas. ¿Quieres cambiarla?
+                {{else}}
+                    Valora esta noticia:
+                {{end}}
+            </h4>
+            
+            <form action="/news/rate" method="POST">
+                <input type="hidden" name="news_id" value="{{.News.ID}}">
+                <div class="star-rating">
+                    <input type="radio" id="star5" name="score" value="5" {{if and .UserRating (eq .UserRating.Score 5)}}checked{{end}} onclick="this.form.submit()"><label for="star5" title="5 estrellas">★</label>
+                    <input type="radio" id="star4" name="score" value="4" {{if and .UserRating (eq .UserRating.Score 4)}}checked{{end}} onclick="this.form.submit()"><label for="star4" title="4 estrellas">★</label>
+                    <input type="radio" id="star3" name="score" value="3" {{if and .UserRating (eq .UserRating.Score 3)}}checked{{end}} onclick="this.form.submit()"><label for="star3" title="3 estrellas">★</label>
+                    <input type="radio" id="star2" name="score" value="2" {{if and .UserRating (eq .UserRating.Score 2)}}checked{{end}} onclick="this.form.submit()"><label for="star2" title="2 estrellas">★</label>
+                    <input type="radio" id="star1" name="score" value="1" {{if and .UserRating (eq .UserRating.Score 1)}}checked{{end}} onclick="this.form.submit()"><label for="star1" title="1 estrella">★</label>
+                </div>
+            </form>
+        {{else}}
+            <p><a href="/login" style="color: #00529F; text-decoration: underline;">Inicia sesión</a> para valorar esta noticia.</p>
+        {{end}}
+    </div>
+</article>
+{{template "footer" .}}

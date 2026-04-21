@@ -180,16 +180,12 @@ http://localhost:8080
 
 ---
 
-## 🔑 Credenciales de Prueba
+## 🔑 Acceso al Sistema
 
-### Administrador (preconfigurado)
-| Campo | Valor |
-|---|---|
-| **Usuario** | `admin` |
-| **Contraseña** | `admin` |
+El sistema incluye una cuenta de administrador preconfigurada. Las credenciales se gestionan directamente en el archivo `proyecto-go/data/users.json` y **no deben publicarse** en este documento.
 
 ### Usuario normal
-Crea tu propia cuenta yendo a [http://localhost:8080/register](http://localhost:8080/register) e introduciendo cualquier nombre de usuario y contraseña.
+Cualquier persona puede registrarse en [http://localhost:8080/register](http://localhost:8080/register) introduciendo un nombre de usuario y contraseña. Las contraseñas se almacenan siempre con hash SHA-256, nunca en texto plano.
 
 ---
 

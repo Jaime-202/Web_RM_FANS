@@ -233,4 +233,4 @@ Navega a [http://localhost:8080/register](http://localhost:8080/register) e intr
 
 ---
 
-*© 2026 Real Madrid News — PEC 1, Redes y Sistemas Web*
+*© 2026 Real Madrid News — PEC 2, Redes y Sistemas Web*

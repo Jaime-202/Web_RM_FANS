@@ -1,6 +1,6 @@
 # 🏟️ Real Madrid News — Portal de Noticias
 
-**PEC 1 — Redes y Sistemas Web**  
+**PEC 2 — Redes y Sistemas Web**  
 **Grupo 11 | Jaime & Izan**
 
 Portal de noticias dinámico sobre el Real Madrid, desarrollado con Go en el backend y CSS/HTML en el frontend. Incluye un sistema completo de usuarios con roles, gestión de contenido y valoraciones por estrellas.
@@ -232,4 +232,4 @@ Navega a [http://localhost:8080/register](http://localhost:8080/register) e intr
 
 ---
 
-*© 2026 Real Madrid News — PEC 1, Redes y Sistemas Web*
+*© 2026 Real Madrid News — PEC 2, Redes y Sistemas Web*

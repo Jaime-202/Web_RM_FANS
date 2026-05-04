@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"encoding/json"
 	"html/template"
 	"net/http"
 	"proyecto-go/internal/middleware"
@@ -98,4 +99,74 @@ func (h *TransferHandler) ServeDelete(w http.ResponseWriter, r *http.Request) {
 	id := r.URL.Query().Get("id")
 	h.transferRepo.Delete(id)
 	http.Redirect(w, r, "/fichajes", http.StatusSeeOther)
+}
+
+func (h *TransferHandler) ServeAPI(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	role, _ := r.Context().Value(middleware.RoleKey).(string)
+	isAdmin := role == "admin"
+
+	switch r.Method {
+	case http.MethodGet:
+		transfers, _ := h.transferRepo.FindAll()
+		json.NewEncoder(w).Encode(transfers)
+
+	case http.MethodPost:
+		if !isAdmin {
+			http.Error(w, `{"error": "Forbidden"}`, http.StatusForbidden)
+			return
+		}
+		var transfer models.Transfer
+		if err := json.NewDecoder(r.Body).Decode(&transfer); err != nil {
+			http.Error(w, `{"error": "Bad Request"}`, http.StatusBadRequest)
+			return
+		}
+		transfer.ID = uuid.New().String()
+		transfer.CreatedAt = time.Now()
+		h.transferRepo.Save(&transfer)
+		w.WriteHeader(http.StatusCreated)
+		json.NewEncoder(w).Encode(transfer)
+
+	case http.MethodPut:
+		if !isAdmin {
+			http.Error(w, `{"error": "Forbidden"}`, http.StatusForbidden)
+			return
+		}
+		var transfer models.Transfer
+		if err := json.NewDecoder(r.Body).Decode(&transfer); err != nil {
+			http.Error(w, `{"error": "Bad Request"}`, http.StatusBadRequest)
+			return
+		}
+		existing, _ := h.transferRepo.FindByID(transfer.ID)
+		if existing == nil {
+			http.Error(w, `{"error": "Not Found"}`, http.StatusNotFound)
+			return
+		}
+		transfer.CreatedAt = existing.CreatedAt
+		h.transferRepo.Update(&transfer)
+		json.NewEncoder(w).Encode(transfer)
+
+	case http.MethodDelete:
+		if !isAdmin {
+			http.Error(w, `{"error": "Forbidden"}`, http.StatusForbidden)
+			return
+		}
+		id := r.URL.Query().Get("id")
+		if id == "" {
+			http.Error(w, `{"error": "Missing ID"}`, http.StatusBadRequest)
+			return
+		}
+		existing, _ := h.transferRepo.FindByID(id)
+		if existing == nil {
+			http.Error(w, `{"error": "Not Found"}`, http.StatusNotFound)
+			return
+		}
+		h.transferRepo.Delete(id)
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(`{"success": true}`))
+
+	default:
+		http.Error(w, `{"error": "Method Not Allowed"}`, http.StatusMethodNotAllowed)
+	}
 }

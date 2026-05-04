@@ -1,36 +1,101 @@
 {{template "header" .}}
+
+<style>
+    .hidden { display: none !important; }
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.6); display: flex;
+        justify-content: center; align-items: center; z-index: 1000;
+    }
+    .modal-content {
+        background: #fff; padding: 25px; border-radius: 8px;
+        width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+</style>
+
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h1 class="hero__title" style="text-align: left; margin: 0;">Rumores y Altas</h1>
     {{if .IsAdmin}}
-    <a href="/admin/transfer/create" class="hero__btn" style="background-color: #28a745;">Añadir Fichaje</a>
+    <button id="btn-create-transfer" class="hero__btn" style="background-color: #28a745; border: none; cursor: pointer;">Añadir Fichaje</button>
     {{end}}
 </div>
 
-<div class="grid" style="grid-template-columns: 1fr;">
-    {{range .Transfers}}
-    <div class="transfer-card" style="position: relative;">
-        <img src="{{.ImageURL}}" alt="{{.PlayerName}}" class="transfer-card__img" onerror="this.src='/img/mastantuono_river.jpg'">
+<div id="transfers-container" class="grid" style="grid-template-columns: 1fr;">
+    <p id="loading-msg">Cargando fichajes...</p>
+</div>
+
+<template id="transfer-template">
+    <div class="transfer-card" style="position: relative;" data-id="">
+        <img src="" alt="" class="transfer-card__img" onerror="this.src='/img/mastantuono_river.jpg'">
         <div class="transfer-card__info">
-            <div class="transfer-card__name">{{.PlayerName}}</div>
-            <p>{{.FromTeam}} → {{.ToTeam}}</p>
-            <p style="font-size: 0.9rem; color: #666; margin-top: 5px;">{{.Description}}</p>
-            
-            {{if eq .Status "Hecho"}}
-                <span class="transfer-card__status_done">{{.Status}}</span>
-            {{else}}
-                <span class="transfer-card__status_rumor">{{.Status}}</span>
-            {{end}}
+            <div class="transfer-card__name"></div>
+            <p class="transfer-card__route"></p>
+            <p class="transfer-card__desc" style="font-size: 0.9rem; color: #666; margin-top: 5px;"></p>
+            <span class="transfer-card__status"></span>
         </div>
 
-        {{if $.IsAdmin}}
+        {{if .IsAdmin}}
         <div style="position: absolute; top: 10px; right: 10px; display: flex; gap: 5px;">
-            <a href="/admin/transfer/edit?id={{.ID}}" class="hero__btn" style="padding: 5px 10px; font-size: 0.8em; background: #f5b301; color: black;">Editar</a>
-            <a href="/admin/transfer/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 5px 10px; font-size: 0.8em; background: #dc3545;" onclick="return confirm('¿Borrar fichaje?');">Borrar</a>
+            <button class="hero__btn btn-edit" style="padding: 5px 10px; font-size: 0.8em; background: #f5b301; color: black; border: none; cursor: pointer;">Editar</button>
+            <button class="hero__btn hero__btn--secondary btn-delete" style="padding: 5px 10px; font-size: 0.8em; background: #dc3545; border: none; cursor: pointer;">Borrar</button>
         </div>
         {{end}}
     </div>
-    {{else}}
-    <p>No hay fichajes ni rumores activos.</p>
-    {{end}}
+</template>
+
+{{if .IsAdmin}}
+<!-- Modal de Creación/Edición -->
+<div id="transfer-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <h2 id="modal-title" style="margin-top: 0;">Añadir Fichaje</h2>
+        <form id="transfer-form">
+            <input type="hidden" name="id" id="form-id">
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Nombre del Jugador:</label>
+                <input type="text" name="player_name" id="form-player_name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Desde (Equipo):</label>
+                <input type="text" name="from_team" id="form-from_team" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Hacia (Equipo):</label>
+                <input type="text" name="to_team" id="form-to_team" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Estado:</label>
+                <select name="status" id="form-status" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="Rumor">Rumor</option>
+                    <option value="Hecho">Hecho</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Descripción:</label>
+                <textarea name="description" id="form-description" rows="3" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">URL Imagen:</label>
+                <input type="text" name="image_url" id="form-image_url" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" id="btn-cancel-modal" class="hero__btn hero__btn--secondary" style="border: none; cursor: pointer;">Cancelar</button>
+                <button type="submit" class="hero__btn" style="border: none; cursor: pointer; background-color: #28a745;">Guardar</button>
+            </div>
+        </form>
+    </div>
 </div>
+{{end}}
+
+<script type="module" src="/js/fichajes_crud.js"></script>
+<script>
+    window.appConfig = { isAdmin: {{.IsAdmin}} };
+</script>
+
 {{template "footer" .}}

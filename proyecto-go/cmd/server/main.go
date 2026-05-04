@@ -68,13 +68,20 @@ func main() {
 	mux.Handle("/admin/player/edit", middleware.AuthMiddleware(middleware.RequireAuth(middleware.RequireAdmin(playerHandler.ServeEditForm))))
 	mux.Handle("/admin/player/delete", middleware.AuthMiddleware(middleware.RequireAuth(middleware.RequireAdmin(playerHandler.ServeDelete))))
 	
+	// API REST para CRUD de Jugadores
+	mux.Handle("/api/players", middleware.AuthMiddleware(http.HandlerFunc(playerHandler.ServeAPI)))
+
 	mux.Handle("/admin/transfer/create", middleware.AuthMiddleware(middleware.RequireAuth(middleware.RequireAdmin(transferHandler.ServeCreateForm))))
 	mux.Handle("/admin/transfer/edit", middleware.AuthMiddleware(middleware.RequireAuth(middleware.RequireAdmin(transferHandler.ServeEditForm))))
 	mux.Handle("/admin/transfer/delete", middleware.AuthMiddleware(middleware.RequireAuth(middleware.RequireAdmin(transferHandler.ServeDelete))))
 
-	// Archivos estáticos (Solo css e img)
+	// API REST para CRUD de Fichajes
+	mux.Handle("/api/transfers", middleware.AuthMiddleware(http.HandlerFunc(transferHandler.ServeAPI)))
+
+	// Archivos estáticos (Solo css, img y js)
 	mux.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.Dir("../css"))))
 	mux.Handle("/img/", http.StripPrefix("/img/", http.FileServer(http.Dir("../img"))))
+	mux.Handle("/js/", http.StripPrefix("/js/", http.FileServer(http.Dir("../js"))))
 
 	log.Println("Servidor iniciado en http://localhost:8080")
 	if err := http.ListenAndServe(":8080", mux); err != nil {

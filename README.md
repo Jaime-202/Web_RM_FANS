@@ -33,7 +33,7 @@ El sistema cuenta con autenticación de usuarios, dos niveles de acceso (Adminis
 | Capa | Tecnología |
 |---|---|
 | **Backend** | Go 1.21+ (`net/http`, `html/template`) |
-| **Frontend** | HTML5, CSS3, SCSS |
+| **Frontend** | HTML5, CSS3, SCSS, Vanilla JavaScript (ES2022+), APIs Fetch (SPA) |
 | **Persistencia** | Archivos JSON (sin base de datos externa) |
 | **Sesiones** | Gestión en memoria con cookies `HttpOnly` |
 | **Dependencias** | `github.com/google/uuid` |
@@ -47,6 +47,7 @@ RSW-PEC1_Grupo11-Jaime-Izan/
 │
 ├── css/                          # CSS compilado (estilos.css)
 ├── scss/                         # Código fuente SCSS
+├── js/                           # JavaScript Vanilla (Lógica MVC y SPA)
 ├── img/                          # Imágenes del portal
 │   └── plantilla/                # Fotos de los jugadores
 │
@@ -103,10 +104,8 @@ RSW-PEC1_Grupo11-Jaime-Izan/
         ├── news_list.html        # Lista completa de noticias
         ├── news_detail.html      # Vista de una noticia + sistema de estrellas
         ├── news_form.html        # Formulario para crear/editar noticias (admin)
-        ├── plantilla.html        # Plantilla completa agrupada por posición
-        ├── player_form.html      # Formulario para añadir/editar jugadores (admin)
-        ├── fichajes.html         # Mercado de fichajes y rumores
-        ├── transfer_form.html    # Formulario para gestionar fichajes (admin)
+        ├── plantilla.html        # SPA de la plantilla de jugadores (JS Vanilla)
+        ├── fichajes.html         # SPA del mercado de fichajes y rumores (JS Vanilla)
         ├── contact.html          # Buzón de rumores para fans
         ├── login.html            # Página de inicio de sesión
         └── register.html         # Página de registro
@@ -215,12 +214,12 @@ Navega a [http://localhost:8080/register](http://localhost:8080/register) e intr
 | `GET/POST /admin/news/create` | Crear nueva noticia |
 | `GET/POST /admin/news/edit?id=X` | Editar noticia existente |
 | `GET /admin/news/delete?id=X` | Eliminar noticia |
-| `GET/POST /admin/player/create` | Añadir jugador a la plantilla |
-| `GET/POST /admin/player/edit?id=X` | Editar datos de un jugador |
-| `GET /admin/player/delete?id=X` | Eliminar jugador |
-| `GET/POST /admin/transfer/create` | Añadir fichaje o rumor |
-| `GET/POST /admin/transfer/edit?id=X` | Editar estado o datos de un fichaje |
-| `GET /admin/transfer/delete?id=X` | Eliminar fichaje |
+
+### APIs REST (SPA)
+| Ruta | Métodos Soportados | Descripción |
+|---|---|---|
+| `/api/players` | `GET`, `POST`, `PUT`, `DELETE` | CRUD asíncrono para la plantilla de jugadores (JSON) |
+| `/api/transfers` | `GET`, `POST`, `PUT`, `DELETE` | CRUD asíncrono para fichajes y rumores (JSON) |
 
 ---
 

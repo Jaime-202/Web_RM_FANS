@@ -1,94 +1,95 @@
 {{template "header" .}}
+
+<style>
+    .hidden { display: none !important; }
+    .modal-overlay {
+        position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+        background: rgba(0,0,0,0.6); display: flex;
+        justify-content: center; align-items: center; z-index: 1000;
+    }
+    .modal-content {
+        background: #fff; padding: 25px; border-radius: 8px;
+        width: 90%; max-width: 500px; box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+    .position-group {
+        margin-bottom: 30px;
+    }
+</style>
+
 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
     <h1 class="hero__title" style="text-align: left; margin: 0;">Plantilla 2025/26</h1>
     {{if .IsAdmin}}
-    <a href="/admin/player/create" class="hero__btn" style="background-color: #28a745;">+ Añadir Jugador</a>
+    <button id="btn-create-player" class="hero__btn" style="background-color: #28a745; border: none; cursor: pointer;">+ Añadir Jugador</button>
     {{end}}
 </div>
 
-{{if .Porteros}}
-<div class="squad-group">
-    <h3 class="squad-group__cat-title">Porteros</h3>
-    <div class="grid grid--squad">
-        {{range .Porteros}}
-        <div class="player-mini" style="position: relative;">
-            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
-            <div class="player-mini__name">{{.Name}}</div>
-            {{if $.IsAdmin}}
-            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
-                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
-                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
-            </div>
-            {{end}}
+<div id="players-container">
+    <p id="loading-msg">Cargando jugadores...</p>
+</div>
+
+<!-- Template para un jugador -->
+<template id="player-template">
+    <div class="player-mini" style="position: relative;" data-id="">
+        <img src="" alt="" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
+        <div class="player-mini__name"></div>
+        {{if .IsAdmin}}
+        <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
+            <button class="hero__btn btn-edit" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black; border: none; cursor: pointer;">✏️</button>
+            <button class="hero__btn hero__btn--secondary btn-delete" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545; border: none; cursor: pointer;">✕</button>
         </div>
         {{end}}
+    </div>
+</template>
+
+<!-- Template para grupo de posición -->
+<template id="position-group-template">
+    <div class="squad-group position-group hidden" data-position="">
+        <h3 class="squad-group__cat-title position-title"></h3>
+        <div class="grid grid--squad position-grid"></div>
+    </div>
+</template>
+
+{{if .IsAdmin}}
+<!-- Modal de Creación/Edición -->
+<div id="player-modal" class="modal-overlay hidden">
+    <div class="modal-content">
+        <h2 id="modal-title" style="margin-top: 0;">Añadir Jugador</h2>
+        <form id="player-form">
+            <input type="hidden" name="id" id="form-id">
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Nombre del Jugador:</label>
+                <input type="text" name="name" id="form-name" required style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="margin-bottom: 10px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">Posición:</label>
+                <select name="position" id="form-position" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option value="Portero">Portero</option>
+                    <option value="Defensa">Defensa</option>
+                    <option value="Centrocampista">Centrocampista</option>
+                    <option value="Delantero">Delantero</option>
+                </select>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <label style="display:block; margin-bottom: 5px; font-weight: bold;">URL Imagen:</label>
+                <input type="text" name="image_url" id="form-image_url" style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+            
+            <div style="display: flex; justify-content: flex-end; gap: 10px;">
+                <button type="button" id="btn-cancel-modal" class="hero__btn hero__btn--secondary" style="border: none; cursor: pointer;">Cancelar</button>
+                <button type="submit" class="hero__btn" style="border: none; cursor: pointer; background-color: #28a745;">Guardar</button>
+            </div>
+        </form>
     </div>
 </div>
 {{end}}
 
-{{if .Defensas}}
-<div class="squad-group">
-    <h3 class="squad-group__cat-title">Defensas</h3>
-    <div class="grid grid--squad">
-        {{range .Defensas}}
-        <div class="player-mini" style="position: relative;">
-            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
-            <div class="player-mini__name">{{.Name}}</div>
-            {{if $.IsAdmin}}
-            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
-                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
-                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
-            </div>
-            {{end}}
-        </div>
-        {{end}}
-    </div>
-</div>
-{{end}}
-
-{{if .Centrocampistas}}
-<div class="squad-group">
-    <h3 class="squad-group__cat-title">Centrocampistas</h3>
-    <div class="grid grid--squad">
-        {{range .Centrocampistas}}
-        <div class="player-mini" style="position: relative;">
-            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
-            <div class="player-mini__name">{{.Name}}</div>
-            {{if $.IsAdmin}}
-            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
-                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
-                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
-            </div>
-            {{end}}
-        </div>
-        {{end}}
-    </div>
-</div>
-{{end}}
-
-{{if .Delanteros}}
-<div class="squad-group">
-    <h3 class="squad-group__cat-title">Delanteros</h3>
-    <div class="grid grid--squad">
-        {{range .Delanteros}}
-        <div class="player-mini" style="position: relative;">
-            <img src="{{.ImageURL}}" alt="{{.Name}}" class="player-mini__img" onerror="this.src='/img/plantilla/courtois.jpg'">
-            <div class="player-mini__name">{{.Name}}</div>
-            {{if $.IsAdmin}}
-            <div style="position: absolute; top: 5px; right: 5px; display: flex; gap: 3px;">
-                <a href="/admin/player/edit?id={{.ID}}" class="hero__btn" style="padding: 3px 7px; font-size: 0.7em; background: #f5b301; color: black;">✏️</a>
-                <a href="/admin/player/delete?id={{.ID}}" class="hero__btn hero__btn--secondary" style="padding: 3px 7px; font-size: 0.7em; background: #dc3545;" onclick="return confirm('¿Borrar a {{.Name}}?');">✕</a>
-            </div>
-            {{end}}
-        </div>
-        {{end}}
-    </div>
-</div>
-{{end}}
-
-{{if not .Players}}
-<p style="text-align:center; color:#666; margin-top: 40px;">No hay jugadores en la plantilla.</p>
-{{end}}
+<script type="module" src="/js/jugadores_crud.js"></script>
+<script>
+    window.appConfig = { isAdmin: {{.IsAdmin}} };
+</script>
 
 {{template "footer" .}}
 
